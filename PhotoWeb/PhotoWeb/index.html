@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>首页</title>
+<link href="css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+<link href="css/style.css" type="text/css" rel="stylesheet" media="all">
+<!--web-font-->
+<link href='http://fonts.useso.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.useso.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700' rel='stylesheet' type='text/css'>
+<!--//web-font-->
+<!-- Custom Theme files -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Excursion Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+	Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //Custom Theme files -->
+<!-- js -->
+<script src="https://ajax.useso.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
+<!-- //js -->	
+<!-- start-smoth-scrolling-->
+<script type="text/javascript" src="js/move-top.js"></script>
+<script type="text/javascript" src="js/easing.js"></script>	
+<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+			});
+		});
+</script>
+
+    <script src="js/bootstrap.js"></script>
+    <script src="/Scripts/angular/angular-1.4.1/angular.min.js"></script>
+    <script src="/Scripts/angular/angular-1.4.1/angular.js"></script>
+    <script src="/Scripts/angular/angular-1.4.1/angular-cookies.js"></script>
+    <script>
+        var user;
+
+        //账户登陆相关
+        var cookie = angular.module('cookie', ['ngCookies'])
+        cookie.controller('cookieController', ['$cookieStore', '$scope', function ($cookieStore, $scope) {
+
+
+        //每次进入网页前先从cookie获取账户信息
+         $scope.getUser = function()
+         {
+
+
+             //确定用户
+             var favoriteCookie = $cookieStore.get('user');
+             user = favoriteCookie;
+
+             //游客
+             if (user == null)
+             {
+                 $scope.setUser("guest");
+             }
+             console.log(user);
+
+
+             //根据用户权限对网页做出改变
+             $scope.myShare();
+             return favoriteCookie;
+         }
+
+         $scope.setUser = function(user)
+         {
+             $cookieStore.put('user', user);
+         }
+
+         $scope.myShare = function () {
+             //默认游客权限
+             if (user != "guest") {
+                 //账户已经登陆
+                 document.getElementById("myShare").href = "myShare.Html";
+             } else {
+                 //游客权限
+             }
+
+         }
+        }]);
+    </script>
+<!--//end-smoth-scrolling-->
+</head>
+<body>
+	<!--navigation-->
+	<div class="top-nav" >
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
+					<ul class="nav navbar-nav navbar-left" ng-app="cookie" ng-controller="cookieController" ng-init="getUser()">
+						<li><a href="index.html" class="active">首页</a></li>
+						<li><a href="share.html">图片分享</a></li>
+						<li><a href="login.html" id="myShare">我的分享</a></li>
+					</ul>	
+					<div class="social-icons">
+						<ul>
+							<li><a href="www.qq.com"></a></li>
+							<li><a href="https://www.facebook.com/" class="fb"></a></li>
+						</ul>	
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+			</div>	
+		</nav>		
+	</div>	
+	<!--navigation-->
+	<!--header-->
+	<div class="header">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="index.html"><img src="images/logo.png" style= "width:50%;height:50%;" alt=""></a>
+			</div>	
+			<form class="navbar-form navbar-right" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="搜索……">
+				</div>
+				<button type="submit" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+				</button>
+			</form>	
+		</div>	
+	</div>
+	<!--//header-->
+	<div class="banner">
+		<!-- banner-text Slider starts Here -->
+				<script src="js/responsiveslides.min.js"></script>
+				 <script>
+					// You can also use "$(window).load(function() {"
+						$(function () {
+						// Slideshow 4
+							$("#slider3").responsiveSlides({
+							auto: true,
+							pager:false,
+							nav:true,
+							speed: 500,
+							namespace: "callbacks",
+							before: function () {
+							$('.events').append("<li>before event fired.</li>");
+							},
+							after: function () {
+								$('.events').append("<li>after event fired.</li>");
+							}
+						});	
+					});
+				</script>
+			<!--//End-slider-script -->
+			<div class="banner-title"> 
+				<div class="container">
+					<div  id="top" class="callbacks_container">
+						<ul class="rslides" id="slider3">
+							<li>
+								<h5>The wonderful trip</h5>
+								<h1>Molestias excepturi sintprovident</h1>
+							</li>
+							<li>
+								<h5>Vident sintocca</h5>
+								<h1>Cupiditate non provident molepturi </h1>
+							</li>
+							<li>
+								<h5>Excepturi sintstias</h5>
+								<h1>Non provident sint occaestiasexce</h1>
+							</li>
+						</ul>	
+					</div>
+				</div>
+            </div>	
+	</div>		
+	
+	<div class="footer">
+		<div class="container">
+			<div class="col-md-4 about">
+				<h3>About Us</h3>	
+				<p> A famous poet said ，youth is a lovely song ,where nothing is impossible.youth is a meaningful book, you’ll be never bored of  it ；youth is a rapid river ,youth is a meaningful book, you’ll be never bored of  it ；youth is a rapid river ,it keeps on flowing day and night ；youth is a cup of tea ,it shows you different kinds of tastes in your life. As youth is so precious, of course, we must treasure it .Don’t let the limited time pass by, leaving nothing of significance to our future. Actually, youth has a lot to do with our future.</p>
+				<p>Tonight,we're young.We strive for our dreams..</p>
+			</div>
+			<div class="col-md-4 posts">
+				<h3>Popular Posts</h3>
+				<div class="media">
+					<div class="media-left">
+						<a href="singlepage.html">
+						  <img class="media-object thumbnail" src="images/img11.jpg" alt="">
+						</a>
+				    </div>
+					<div class="media-body">
+						<h4 class="media-heading"><a href="singlepage.html">Baker Street</a></h4>
+						<h5>April 17, 2016</h5>
+					</div>
+				</div>
+				<div class="media">
+					<div class="media-left">
+						<a href="singlepage.html">
+						  <img class="media-object thumbnail" src="images/img10.jpg" alt="">
+						</a>
+				    </div>
+					<div class="media-body">
+						<h4 class="media-heading"><a href="singlepage.html">Florida</a></h4>
+						<h5>April 17, 2016</h5>
+					</div>
+				</div>
+				<div class="media">
+					<div class="media-left">
+						<a href="singlepage.html">
+						  <img class="media-object thumbnail" src="images/img11.jpg" alt="">
+						</a>
+				    </div>
+					<div class="media-body">
+						<h4 class="media-heading"><a href="singlepage.html">Lorest Nesto</a></h4>
+						<h5>April 17, 2016</h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 address">
+				<h3>Our address</h3>
+				<p> </p>
+				<ul>
+					<li><span></span>武汉市武昌区珞瑜路37号武汉大学国际软件学院</li>
+					<li><span class="ph-no"></span>027-87506322</li>
+					<li><span class="mail"></span><a href="hlwjr@whu.edu.cn">hlwjr@whu.edu.cn</a></li>
+				</ul>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+	<div class="copy-right">
+		<div class="container">
+			<p>Copyright &copy; 2015.Company name All rights reserved.</p>
+		</div>
+	</div>
+	<!--smooth-scrolling-of-move-up-->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				/*
+				var defaults = {
+					containerID: 'toTop', // fading element id
+					containerHoverID: 'toTopHover', // fading element hover id
+					scrollSpeed: 1200,
+					easingType: 'linear' 
+				};
+				*/
+				
+				$().UItoTop({ easingType: 'easeOutQuart' });
+				
+			});
+		</script>
+		<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+	<!--//smooth-scrolling-of-move-up-->
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+</body>
+</html>

@@ -1,0 +1,489 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>我的分享</title>
+    <link href="css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="all">
+    <!--web-font-->
+    <link href='http://fonts.useso.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.useso.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700' rel='stylesheet' type='text/css'>
+    <!--//web-font-->
+    <!-- Custom Theme files -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Excursion Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+	Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //Custom Theme files -->
+    <!-- js -->
+    <script src="https://ajax.useso.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- //js -->
+    <!-- start-smoth-scrolling-->
+    <script type="text/javascript" src="js/move-top.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
+    <script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+			});
+		});
+    </script>
+    <script src="js/bootstrap.js"></script>
+    <script src="/Scripts/angular/angular-1.4.1/angular.min.js"></script>
+    <script src="/Scripts/angular/angular-1.4.1/angular.js"></script>
+    <script src="/Scripts/angular/angular-1.4.1/angular-cookies.js"></script>
+    <script>
+        var user;
+
+        //账户登陆相关
+        var cookie = angular.module('app', ['ngCookies'])
+        cookie.controller('UploaderController', ['$cookieStore','$scope' ,"$http",function ($cookieStore ,$scope,$http) {
+
+            //上传图片
+            $scope.save = function() {
+                var fd = new FormData();
+                var file = document.querySelector('input[type=file]').files[0];
+                fd.append(user, file);
+                $http({
+                    method:'POST',
+                    url: "http://localhost:51060/api/User/upload",
+                    data: fd,
+                    params: { myUser: user },
+                    headers: { 'Content-Type': undefined, "From": user },
+                    transformRequest: angular.identity
+                }).success( function ( response )
+                {
+                    console.log("图片上传成功");
+                    //更新图片
+                    $scope.getImage();
+                });
+            }
+
+
+          
+            $scope.delete = function ()
+            {
+                //在网页中删除
+                removex();
+                //在后台中删除
+                $scope.deletePic();
+            }
+
+            //删除图片
+            //参数是删除图片的地址
+            $scope.deletePic = function ()
+            {
+                deleteArray = wanttodel;//获取待删除图片信息
+                for (var i=0; i < deleteArray.length; i++)
+                {
+                    console.log("删除" + deleteArray[i]);
+                    $http({
+                        method: 'POST',
+                        url: "http://localhost:51060/api/User/del",
+                        data: { src: deleteArray[i], user: user }
+                    }).success(function (response) {                   
+                    });
+                }
+                wanttodel = new Array();
+            }
+
+            //初始化
+            $scope.initial=function ()
+            {
+                $scope.getUser();
+                $scope.getImage();
+            }
+
+            //获取图片
+            $scope.getImage = function ()
+            {
+
+                $http({
+                    method: 'post',
+                    url: "http://localhost:51060/api/User/get",
+                    data: { name: user}
+                }).success(function (data)
+                {
+                    //console.log(data);
+                    setting(data);
+                }
+                )
+            }
+
+            //每次进入网页前先从cookie获取账户信息
+            $scope.getUser = function()
+            {
+                //获得用户
+                var favoriteCookie = $cookieStore.get('user');
+                user = favoriteCookie;
+                console.log(user);
+                return favoriteCookie;
+            }
+
+            $scope.setUser = function(user)
+            {
+                $cookieStore.put('user', user);
+            }
+
+
+        }]);
+
+    </script>
+    <!--//end-smoth-scrolling-->
+</head>
+<body ng-app="app" ng-controller="UploaderController" ng-init="initial()">
+    <!--navigation-->
+    <div class="top-nav">
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="share.html">图片分享</a></li>
+                        <li><a href="myshare.html" class="active">我的分享</a></li>
+                    </ul>
+                    <div class="social-icons">
+                        <ul>
+                            <li><a href="#"></a></li>
+                            <li><a href="#" class="fb"></a></li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!--navigation-->
+    <!--header-->
+    <div class="header">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html"><img src="images/logo.png" style="width:50%;height:50%;" alt=""></a>
+            </div>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索……">
+                </div>
+                <button type="submit" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <!--//header-->
+    <div class="gallery">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="index.html">首页</a></li>
+                <li>我的分享</li>
+
+
+            </ol>
+            <div>
+                <div>
+                </div>
+                <form role="form" class="margin-top_1">
+                    <div class="fileUpload btn btn-primary right_1">
+                        <span>确定</span>
+                        <input ng-click="delete()" class="upload" />
+                    </div>
+                    <div class="fileUpload btn btn-primary right_1" > 
+                        <span>删除</span>
+                        <input onclick="deletepic()" class="upload" />
+                    </div>
+                    <div class="fileUpload btn btn-primary right_1">
+                        <span>确定</span>
+                        <input ng-click="save()" class="upload" />
+                    </div>
+                    <div class="fileUpload btn btn-primary right_1" >
+                        <span>上传</span>
+                        <input type="file" class="upload " file-model="myFile" />
+                    </div>            
+                </form>
+            </div>
+            <div class="margin-top_1 tesimonial "><h3>我的分享</h3></div>
+            <div class="gallry-info">
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="1">
+
+                    </div>
+                    <a href="images/img33.jpg" id="apone" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img33.jpg" id="pone" class="img-responsive glry-img" alt="">
+
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom-img img-circle" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="2">
+
+                    </div>
+                    <a href="images/img31.jpg" id="aptwo" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img34.jpg" id="ptwo" class="img-responsive glry-img" alt="">
+
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+
+                    </a>
+                </div>
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="3">
+
+                    </div>
+                    <a href="images/img33.jpg" id="apthree" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img35.jpg" id="pthree" class="img-responsive glry-img " alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="4">
+
+                    </div>
+                    <a href="images/img32.jpg" id="apfour" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img36.jpg" id="pfour" class="img-responsive glry-img" alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="gallry-info">
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="5">
+
+                    </div>
+                    <a href="images/img37.jpg" id="apfive" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img37.jpg" id="pfive" class="img-responsive glry-img" alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom-img img-circle" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="6">
+
+                    </div>
+                    <a href="images/img38.jpg" id="apsix" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img38.jpg" id="psix" class="img-responsive glry-img" alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="7">
+
+                    </div>
+                    <a href="images/img39.jpg" id="apseven" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img39.jpg" id="pseven" class="img-responsive glry-img " alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="8">
+
+                    </div>
+                    <a href="images/img40.jpg" id="apeight" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img40.jpg" id="peight" class="img-responsive glry-img" alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="gallry-info">
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="9">
+
+                    </div>
+                    <a href="images/img41.jpg" id="apnine" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img41.jpg" id="pnine" class="img-responsive glry-img" alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom-img img-circle" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="10">
+
+                    </div>
+                    <a href="images/img42.jpg" id="apten" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img42.jpg" id="pten" class="img-responsive glry-img" alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="11">
+
+                    </div>
+                    <a href="images/img28.jpg" id="apeleven" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img28.jpg" id="peleven" class="img-responsive glry-img " alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 gallery-grids">
+                    <div class="closeLayer" id="12">
+
+                    </div>
+                    <a href="images/img24.jpg" id="aptwelve" class="b-link-stripe b-animate-go  swipebox" title="">
+                        <img src="images/img24.jpg" id="ptwelve" class="img-responsive glry-img" alt="">
+                        <div class="b-wrapper">
+                            <span class="b-animate b-from-left    b-delay03 ">
+                                <img class="img-responsive zoom" src="images/e.png" alt="" />
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        
+        <div class="pagnation" id="pagnation">
+            <!--a  class="page-prev">上一页</a>
+            <a  class="current">1</a>
+            <a href="" >2</a>
+            <a href="" >3</a>
+            <a href="" >4</a>
+            <a href="" >5</a>...
+            <a href="" >13</a>
+            <a href="" class="page-next">下一页</a-->
+        </div>
+    </div>
+    <link rel="stylesheet" href="css/swipebox.css">
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script type="text/javascript">
+				jQuery(function($) {
+					$(".swipebox").swipebox();
+				});
+    </script>
+    <!--footer-->
+    <div class="footer">
+        <div class="container">
+            <div class="col-md-4 about">
+                <h3>About Us</h3>
+                <p> A famous poet said ，youth is a lovely song ,where nothing is impossible.youth is a meaningful book, you’ll be never bored of  it ；youth is a rapid river ,youth is a meaningful book, you’ll be never bored of  it ；youth is a rapid river ,it keeps on flowing day and night ；youth is a cup of tea ,it shows you different kinds of tastes in your life. As youth is so precious, of course, we must treasure it .Don’t let the limited time pass by, leaving nothing of significance to our future. Actually, youth has a lot to do with our future.</p>
+                <p>Tonight,we're young.We strive for our dreams..</p>
+            </div>
+            <div class="col-md-4 posts">
+                <h3>Popular Posts</h3>
+                <div class="media">
+                    <div class="media-left">
+                        <a href="singlepage.html">
+                            <img class="media-object thumbnail" src="images/img11.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading"><a href="singlepage.html">Baker Street</a></h4>
+                        <h5>April 17, 2016</h5>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+                        <a href="singlepage.html">
+                            <img class="media-object thumbnail" src="images/img10.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading"><a href="singlepage.html">Florida</a></h4>
+                        <h5>April 17, 2016</h5>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+                        <a href="singlepage.html">
+                            <img class="media-object thumbnail" src="images/img11.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading"><a href="singlepage.html">Lorest Nesto</a></h4>
+                        <h5>April 17, 2016</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 address">
+                <h3>Our address</h3>
+                <p> </p>
+                <ul>
+                    <li><span></span>武汉市武昌区珞瑜路37号武汉大学国际软件学院</li>
+                    <li><span class="ph-no"></span>027-87506322</li>
+                    <li><span class="mail"></span><a href="hlwjr@whu.edu.cn">hlwjr@whu.edu.cn</a></li>
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+    <div class="copy-right">
+        <div class="container">
+            <p>Copyright &copy; 2015.Company name All rights reserved.</p>
+        </div>
+    </div>
+    <!--//footer-->
+    <!--smooth-scrolling-of-move-up-->
+    <script type="text/javascript">
+			$(document).ready(function() {
+				/*
+				var defaults = {
+					containerID: 'toTop', // fading element id
+					containerHoverID: 'toTopHover', // fading element hover id
+					scrollSpeed: 1200,
+					easingType: 'linear'
+				};
+				*/
+
+				$().UItoTop({ easingType: 'easeOutQuart' });
+
+			});
+    </script>
+    <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+    <!--//smooth-scrolling-of-move-up-->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+   
+</body>
+</html>
